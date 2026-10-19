@@ -1,0 +1,6 @@
+{
+  "name": "Grupo Afiansur - Sociedad de Participaciones y Negocios",
+  "description": "Sitio institucional y plataforma corporativa de Grupo Afiansur: tecnología, comunicación, talento, medios y educación.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
