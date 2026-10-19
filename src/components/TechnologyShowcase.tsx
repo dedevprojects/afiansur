@@ -4,11 +4,11 @@ import { motion } from 'motion/react';
 import { Brand } from '../data/afiansurData';
 
 interface TechnologyShowcaseProps {
-  onSelectBrand: (brand: Brand) => void;
+  onSelectBrand?: (brand: Brand) => void;
   brands: Brand[];
 }
 
-export const TechnologyShowcase: React.FC<TechnologyShowcaseProps> = ({ onSelectBrand, brands }) => {
+export const TechnologyShowcase: React.FC<TechnologyShowcaseProps> = ({ brands }) => {
   const agenciaGol = brands.find((b) => b.id === 'agencia-gol') || brands[0];
   const agroconexiones = brands.find((b) => b.id === 'agroconexiones');
   const reservaclick = brands.find((b) => b.id === 'reservaclick');
@@ -17,7 +17,7 @@ export const TechnologyShowcase: React.FC<TechnologyShowcaseProps> = ({ onSelect
   const products = [agroconexiones, reservaclick, inmobiliosis].filter(Boolean) as Brand[];
 
   return (
-    <section className="w-full px-6 sm:px-10 md:px-16 py-20 md:py-28 bg-[#fafafa]" id="tecnologia">
+    <section className="w-full px-6 sm:px-10 md:px-16 py-20 md:py-28 bg-[#f4f3ee] border-y border-[#e6e4df]/80" id="tecnologia">
       <div className="max-w-7xl mx-auto">
         {/* Alternating Layout matching the PRESS section in reference */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -47,10 +47,12 @@ export const TechnologyShowcase: React.FC<TechnologyShowcaseProps> = ({ onSelect
             {/* 3 Digital Products in sleek cards */}
             <div className="space-y-3 pt-2">
               {products.map((prod) => (
-                <div
+                <a
                   key={prod.id}
-                  onClick={() => onSelectBrand(prod)}
-                  className="bg-white p-4 sm:p-5 rounded-2xl shadow-xs hover:shadow-lg border border-neutral-100 hover:border-neutral-300 hover:-translate-y-1.5 flex items-center justify-between gap-4 cursor-pointer transition-all duration-300 group"
+                  href={prod.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white p-4 sm:p-5 rounded-2xl shadow-xs hover:shadow-lg border border-neutral-100 hover:border-neutral-300 hover:-translate-y-1.5 flex items-center justify-between gap-4 transition-all duration-300 group block"
                 >
                   <div>
                     <span className="text-[10px] font-mono uppercase tracking-wider text-[#7b766f] block">
@@ -66,21 +68,23 @@ export const TechnologyShowcase: React.FC<TechnologyShowcaseProps> = ({ onSelect
                   <div className="w-8 h-8 rounded-full bg-neutral-100 group-hover:bg-[#121313] group-hover:text-white flex items-center justify-center text-[#121313] group-hover:scale-110 transition-all duration-300 shrink-0">
                     <ArrowUpRight className="w-4 h-4" />
                   </div>
-                </div>
+                </a>
               ))}
             </div>
 
             {/* Action Button */}
             <div className="pt-4 flex items-center gap-4">
-              <button
-                onClick={() => onSelectBrand(agenciaGol)}
+              <a
+                href={agenciaGol.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="pill-action-btn"
               >
                 <span>Conocer Agencia Gol</span>
                 <span className="pill-action-btn-circle">
                   <ArrowRight className="w-4 h-4" />
                 </span>
-              </button>
+              </a>
             </div>
           </motion.div>
 

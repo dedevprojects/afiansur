@@ -26,7 +26,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenContact }) => {
   const navItems = [
     { label: 'El grupo', href: '#el-grupo' },
     { label: 'Unidades de negocio', href: '#unidades' },
-    { label: 'Nuestros negocios', href: '#nuestros-negocios' },
+    { label: 'Empresas', href: '#empresas' },
   ];
 
   return (

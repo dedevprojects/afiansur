@@ -46,8 +46,8 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact, onOpenTerms, onOp
             <a href="#tecnologia" className="hover:text-[#121313] transition-colors">
               Tecnología
             </a>
-            <a href="#nuestros-negocios" className="hover:text-[#121313] transition-colors">
-              Negocios
+            <a href="#empresas" className="hover:text-[#121313] transition-colors">
+              Empresas
             </a>
             <button onClick={onOpenContact} className="hover:text-[#121313] transition-colors cursor-pointer">
               Contacto
@@ -66,7 +66,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenContact, onOpenTerms, onOp
               Privacidad
             </button>
             <span className="font-mono text-[11px] text-[#a19d95]">
-              BUENOS AIRES · ASUNCIÓN · MADRID
+              HOLDING REGIONAL · RED DE EMPRESAS
             </span>
           </div>
         </div>

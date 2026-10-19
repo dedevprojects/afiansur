@@ -8,7 +8,7 @@ interface InstitutionalClosingProps {
 
 export const InstitutionalClosing: React.FC<InstitutionalClosingProps> = ({ onOpenContact }) => {
   return (
-    <section className="relative w-full px-6 sm:px-10 md:px-16 py-20 md:py-28 bg-[#fafafa]" id="contacto-cierre">
+    <section className="relative w-full px-6 sm:px-10 md:px-16 py-20 md:py-28 bg-[#f5f4ef] border-t border-[#e8e6e1]/80" id="contacto-cierre">
       <div className="max-w-7xl mx-auto">
         {/* Contact Section Layout matching CONTACT block in reference */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
@@ -67,7 +67,7 @@ export const InstitutionalClosing: React.FC<InstitutionalClosingProps> = ({ onOp
                 <div className="space-y-2 text-sm text-[#5f5d59]">
                   <div className="flex items-center gap-3">
                     <MapPin className="w-4 h-4 text-[#121313]" />
-                    <span>Buenos Aires · Asunción · Madrid</span>
+                    <span>Presencia y alcance regional e internacional</span>
                   </div>
                 </div>
               </div>
@@ -114,13 +114,13 @@ export const InstitutionalClosing: React.FC<InstitutionalClosingProps> = ({ onOp
                 <div className="absolute inset-0 rounded-full bg-[#121313] animate-pulse-beacon pointer-events-none"></div>
               </div>
               <div className="mt-2.5 bg-white/95 backdrop-blur-md px-3.5 py-1 rounded-full shadow-md text-[11px] font-bold text-[#121313] uppercase tracking-wider whitespace-nowrap">
-                BUENOS AIRES HQ
+                SEDE CENTRAL
               </div>
             </div>
 
             <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-2xl text-[11px] text-[#5f5d59] flex items-center justify-between">
-              <span className="font-semibold text-[#121313]">Ciudad Autónoma de Buenos Aires</span>
-              <span className="font-mono text-[#7b766f]">ARGENTINA</span>
+              <span className="font-semibold text-[#121313]">Sede Central Corporativa</span>
+              <span className="font-mono text-[#7b766f]">CONO SUR</span>
             </div>
           </motion.div>
         </div>

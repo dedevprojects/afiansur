@@ -4,10 +4,10 @@ import { motion } from 'motion/react';
 import { BUSINESS_UNITS } from '../data/afiansurData';
 
 interface BusinessUnitsProps {
-  onSelectBrandName: (brandName: string) => void;
+  onSelectBrandName?: (brandName: string) => void;
 }
 
-export const BusinessUnits: React.FC<BusinessUnitsProps> = ({ onSelectBrandName }) => {
+export const BusinessUnits: React.FC<BusinessUnitsProps> = () => {
   const getUnitIcon = (category: string) => {
     switch (category) {
       case 'tecnologia': return Cpu;
@@ -16,6 +16,13 @@ export const BusinessUnits: React.FC<BusinessUnitsProps> = ({ onSelectBrandName 
       case 'medios': return Radio;
       case 'educacion': return GraduationCap;
       default: return Cpu;
+    }
+  };
+
+  const scrollToEmpresas = () => {
+    const el = document.getElementById('empresas');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -33,7 +40,7 @@ export const BusinessUnits: React.FC<BusinessUnitsProps> = ({ onSelectBrandName 
             </h2>
           </div>
           <p className="text-[15px] sm:text-[16px] text-[#5f5d59] max-w-md leading-relaxed">
-            Cada unidad responde a una actividad específica y reúne marcas que comparten capacidades, infraestructura y mercados consolidados.
+            Cada unidad responde a una actividad específica y reúne empresas que comparten capacidades, infraestructura y mercados consolidados.
           </p>
         </div>
 
@@ -100,25 +107,25 @@ export const BusinessUnits: React.FC<BusinessUnitsProps> = ({ onSelectBrandName 
                   <div className="pt-4 border-t border-neutral-100/80">
                     <div className="flex flex-wrap gap-1.5 mb-5">
                       {unit.brands.map((b) => (
-                        <button
+                        <a
                           key={b}
-                          onClick={() => onSelectBrandName(b)}
+                          href="#empresas"
                           className="px-2.5 py-1 bg-neutral-100 hover:bg-[#121313] hover:text-white text-[11px] font-semibold text-[#121313] rounded-lg transition-colors cursor-pointer"
                         >
                           {b}
-                        </button>
+                        </a>
                       ))}
                     </div>
 
-                    <button
-                      onClick={() => onSelectBrandName(unit.brands[0])}
+                    <a
+                      href="#empresas"
                       className="pill-action-btn w-full justify-between"
                     >
-                      <span>Ver marcas</span>
+                      <span>Ver empresas</span>
                       <span className="pill-action-btn-circle">
                         <ArrowUpRight className="w-3.5 h-3.5" />
                       </span>
-                    </button>
+                    </a>
                   </div>
                 </motion.div>
               );
@@ -160,27 +167,27 @@ export const BusinessUnits: React.FC<BusinessUnitsProps> = ({ onSelectBrandName 
 
                   <div className="flex flex-wrap gap-1.5">
                     {unit.brands.map((b) => (
-                      <button
+                      <a
                         key={b}
-                        onClick={() => onSelectBrandName(b)}
+                        href="#empresas"
                         className="px-2.5 py-1 bg-neutral-100 hover:bg-[#121313] hover:text-white text-[11px] font-semibold text-[#121313] rounded-lg transition-colors cursor-pointer"
                       >
                         {b}
-                      </button>
+                      </a>
                     ))}
                   </div>
                 </div>
 
                 <div className="pt-2 md:pt-4 self-end md:self-center">
-                  <button
-                    onClick={() => onSelectBrandName(unit.brands[0])}
+                  <a
+                    href="#empresas"
                     className="pill-action-btn"
                   >
                     <span>Explorar</span>
                     <span className="pill-action-btn-circle">
                       <ArrowUpRight className="w-3.5 h-3.5" />
                     </span>
-                  </button>
+                  </a>
                 </div>
               </motion.div>
             );

@@ -5,7 +5,7 @@ import { Brand } from '../data/afiansurData';
 
 interface BrandDirectoryProps {
   brands: Brand[];
-  onSelectBrand: (brand: Brand) => void;
+  onSelectBrand?: (brand: Brand) => void;
 }
 
 const BRAND_IMAGES: Record<string, string> = {
@@ -18,6 +18,7 @@ const BRAND_IMAGES: Record<string, string> = {
   'mandel-producciones': 'https://images.unsplash.com/photo-1579965342575-16428a7c8881?auto=format&fit=crop&w=700&q=80',
   'consultora-contraluz': 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=700&q=80',
   'grupo-mastech': 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=700&q=80',
+  'gm': 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=700&q=80',
   'historias-narradas': 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=700&q=80',
   'guia-sabor': 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=700&q=80',
   'escuela-online': 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=700&q=80',
@@ -31,7 +32,7 @@ const CATEGORY_STYLES: Record<string, { bg: string; text: string; dot: string }>
   educacion: { bg: 'bg-emerald-50', text: 'text-emerald-900', dot: 'bg-emerald-600' },
 };
 
-export const BrandDirectory: React.FC<BrandDirectoryProps> = ({ brands, onSelectBrand }) => {
+export const BrandDirectory: React.FC<BrandDirectoryProps> = ({ brands }) => {
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -57,7 +58,7 @@ export const BrandDirectory: React.FC<BrandDirectoryProps> = ({ brands, onSelect
   const featuredBrand = brands.find((b) => b.id === 'agencia-gol') || brands[0];
 
   return (
-    <section className="w-full px-6 sm:px-10 md:px-16 py-20 md:py-28 bg-[#fbfbfa]" id="nuestros-negocios">
+    <section className="w-full px-6 sm:px-10 md:px-16 py-20 md:py-28 bg-[#fbfbfa]" id="empresas">
       <div className="max-w-7xl mx-auto">
         {/* Continuous Animated Marquee for all 12 Group Brands */}
         <div className="mb-20 pb-12 border-b border-neutral-200/80 overflow-hidden">
@@ -66,7 +67,7 @@ export const BrandDirectory: React.FC<BrandDirectoryProps> = ({ brands, onSelect
               12 EMPRESAS Y PLATAFORMAS CONSOLIDADAS DEL GRUPO
             </p>
             <span className="text-[11px] font-mono text-[#a19d95]">
-              Carrusel continuo · Clic para explorar
+              Carrusel continuo · Enlaces directos
             </span>
           </div>
 
@@ -79,9 +80,13 @@ export const BrandDirectory: React.FC<BrandDirectoryProps> = ({ brands, onSelect
               {[...brands, ...brands].map((b, i) => (
                 <button
                   key={`${b.id}-${i}`}
-                  onClick={() => onSelectBrand(b)}
-                  className="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-white border border-neutral-200/80 shadow-2xs hover:shadow-lg hover:border-black hover:-translate-y-1 transition-all duration-300 cursor-pointer shrink-0 group"
-                  title={`Ver expediente de ${b.name}`}
+                  onClick={() => {
+                    if (b.url) window.open(b.url, '_blank', 'noopener,noreferrer');
+                  }}
+                  className={`inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-white border border-neutral-200/80 shadow-2xs hover:shadow-lg hover:border-black hover:-translate-y-1 transition-all duration-300 shrink-0 group ${
+                    b.url ? 'cursor-pointer' : 'cursor-default'
+                  }`}
+                  title={b.url ? `Visitar sitio oficial de ${b.name}` : b.name}
                 >
                   <span className="w-2 h-2 rounded-full bg-[#121313] group-hover:scale-150 transition-transform"></span>
                   <span className="font-sans font-black text-lg sm:text-xl text-[#121313] tracking-tight group-hover:text-black">
@@ -90,6 +95,9 @@ export const BrandDirectory: React.FC<BrandDirectoryProps> = ({ brands, onSelect
                   <span className="text-[10px] font-mono uppercase tracking-wider text-[#7b766f] bg-neutral-100 group-hover:bg-neutral-200/70 px-2.5 py-0.5 rounded-md transition-colors">
                     {b.categoryLabel.split('&')[0].trim()}
                   </span>
+                  {b.url && (
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#7b766f] group-hover:text-black transition-colors" />
+                  )}
                 </button>
               ))}
             </div>
@@ -100,14 +108,14 @@ export const BrandDirectory: React.FC<BrandDirectoryProps> = ({ brands, onSelect
         <div className="flex flex-col md:flex-row md:items-end justify-between pb-10 mb-10 gap-6 border-b border-neutral-200/80">
           <div>
             <span className="text-xs uppercase tracking-[0.2em] font-bold text-[#7b766f] block mb-2">
-              PORTFOLIO CORPORATIVO
+              EMPRESAS DEL GRUPO
             </span>
             <h2 className="font-sans font-black text-[34px] sm:text-[46px] text-[#121313] tracking-tight leading-[1.06]">
-              Cada negocio, su identidad.
+              Cada empresa, su identidad.
             </h2>
           </div>
           <p className="text-[15px] sm:text-[16px] text-[#5f5d59] max-w-md leading-relaxed">
-            Las marcas de Grupo Afiansur operan con propuestas y equipos especializados bajo una gobernanza común de solidez financiera y tecnológica.
+            Las empresas y plataformas de Grupo Afiansur operan con propuestas y equipos especializados bajo una gobernanza común de solidez financiera y tecnológica.
           </p>
         </div>
 
@@ -118,8 +126,7 @@ export const BrandDirectory: React.FC<BrandDirectoryProps> = ({ brands, onSelect
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            onClick={() => onSelectBrand(featuredBrand)}
-            className="mb-12 bg-white rounded-3xl p-6 sm:p-10 shadow-[0_15px_40px_rgba(0,0,0,0.06)] border border-neutral-100 hover:shadow-[0_25px_50px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
+            className="mb-12 bg-white rounded-3xl p-6 sm:p-10 shadow-[0_15px_40px_rgba(0,0,0,0.06)] border border-neutral-100 hover:shadow-[0_25px_50px_rgba(0,0,0,0.1)] transition-all duration-300 group"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               {/* Image side with live badge */}
@@ -168,12 +175,23 @@ export const BrandDirectory: React.FC<BrandDirectoryProps> = ({ brands, onSelect
                 </div>
 
                 <div className="flex items-center justify-between pt-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#121313] flex items-center gap-2 group-hover:translate-x-1 transition-transform">
-                    Explorar expediente institucional →
-                  </span>
-                  <div className="w-9 h-9 rounded-full bg-[#121313] text-white flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <ArrowUpRight className="w-4 h-4" />
-                  </div>
+                  {featuredBrand.url ? (
+                    <a
+                      href={featuredBrand.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="pill-action-btn"
+                    >
+                      <span>Visitar sitio web oficial</span>
+                      <span className="pill-action-btn-circle">
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </span>
+                    </a>
+                  ) : (
+                    <span className="text-xs font-semibold text-[#7b766f]">
+                      Empresa consolidada del grupo
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -204,7 +222,7 @@ export const BrandDirectory: React.FC<BrandDirectoryProps> = ({ brands, onSelect
             <Search className="w-4 h-4 text-[#7b766f] absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Buscar marcas o capacidades..."
+              placeholder="Buscar empresas o capacidades..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-white border border-neutral-200/90 rounded-full pl-9 pr-8 py-2 text-xs text-[#121313] placeholder:text-[#7b766f] focus:outline-hidden focus:border-[#121313] shadow-2xs transition-colors"
@@ -220,10 +238,10 @@ export const BrandDirectory: React.FC<BrandDirectoryProps> = ({ brands, onSelect
           </div>
         </div>
 
-        {/* Brand Grid: Rich Visual Cards with distinct Photography & Metrics */}
+        {/* Brand Grid: Rich Visual Cards */}
         {filteredBrands.length === 0 ? (
           <div className="py-16 text-center bg-white rounded-3xl p-8 border border-neutral-100 shadow-sm">
-            <p className="font-sans font-bold text-xl text-[#121313] mb-2">No se encontraron marcas</p>
+            <p className="font-sans font-bold text-xl text-[#121313] mb-2">No se encontraron empresas</p>
             <p className="text-sm text-[#5f5d59]">Intente con otros términos o seleccione otra categoría.</p>
           </div>
         ) : (
@@ -240,8 +258,7 @@ export const BrandDirectory: React.FC<BrandDirectoryProps> = ({ brands, onSelect
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.45, delay: idx * 0.04 }}
-                  onClick={() => onSelectBrand(brand)}
-                  className="bg-white rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.1)] border border-neutral-100 hover:border-neutral-200/90 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between cursor-pointer group"
+                  className="bg-white rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.1)] border border-neutral-100 hover:border-neutral-200/90 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group"
                 >
                   <div>
                     {/* Brand Photography Visual with Category Badge */}
@@ -285,16 +302,17 @@ export const BrandDirectory: React.FC<BrandDirectoryProps> = ({ brands, onSelect
                         <h3 className="font-sans font-black text-2xl text-[#121313] group-hover:text-black leading-tight">
                           {brand.name}
                         </h3>
-                        <a
-                          href={brand.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="w-7 h-7 rounded-full bg-neutral-100 hover:bg-[#121313] hover:text-white flex items-center justify-center text-[#7b766f] transition-colors shrink-0"
-                          title="Visitar sitio oficial"
-                        >
-                          <ArrowUpRight className="w-3.5 h-3.5" />
-                        </a>
+                        {brand.url ? (
+                          <a
+                            href={brand.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-7 h-7 rounded-full bg-neutral-100 hover:bg-[#121313] hover:text-white flex items-center justify-center text-[#7b766f] transition-colors shrink-0"
+                            title={`Visitar sitio oficial de ${brand.name}`}
+                          >
+                            <ArrowUpRight className="w-3.5 h-3.5" />
+                          </a>
+                        ) : null}
                       </div>
 
                       <p className="text-[11px] font-semibold uppercase tracking-wider text-[#7b766f] mb-3 line-clamp-1">
@@ -319,14 +337,26 @@ export const BrandDirectory: React.FC<BrandDirectoryProps> = ({ brands, onSelect
                     </div>
                   </div>
 
-                  {/* Bottom Pill Action */}
-                  <div className="px-6 pb-6 pt-2 border-t border-neutral-100/70">
-                    <span className="pill-action-btn w-full justify-between">
-                      <span>Ver ficha técnica</span>
-                      <span className="pill-action-btn-circle">
-                        <ArrowUpRight className="w-3.5 h-3.5" />
-                      </span>
-                    </span>
+                  {/* Bottom Action: Direct Link or Clean Indicator (No Dossiers) */}
+                  <div className="px-6 pb-6 pt-3 border-t border-neutral-100/70">
+                    {brand.url ? (
+                      <a
+                        href={brand.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="pill-action-btn w-full justify-between"
+                      >
+                        <span>Visitar sitio web</span>
+                        <span className="pill-action-btn-circle">
+                          <ArrowUpRight className="w-3.5 h-3.5" />
+                        </span>
+                      </a>
+                    ) : (
+                      <div className="flex items-center justify-between py-2 text-xs text-[#7b766f]">
+                        <span className="font-semibold uppercase tracking-wider text-[11px] text-[#121313]">Soluciones de RR. HH.</span>
+                        <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 bg-neutral-100 rounded-md text-[#5f5d59]">Empresa del Grupo</span>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               );

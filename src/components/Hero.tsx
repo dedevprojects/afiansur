@@ -3,10 +3,10 @@ import { ArrowRight, Building2, ExternalLink } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface HeroProps {
-  onOpenArchitecture: () => void;
+  onOpenArchitecture?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onOpenArchitecture }) => {
+export const Hero: React.FC<HeroProps> = () => {
   return (
     <section className="relative w-full px-6 sm:px-10 md:px-16 pt-10 md:pt-16 pb-20 md:pb-28 bg-white overflow-hidden" id="hero">
       <div className="max-w-7xl mx-auto">
@@ -39,7 +39,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenArchitecture }) => {
 
             {/* Paragraph description */}
             <p className="text-[16px] sm:text-[18px] text-[#5f5d59] leading-relaxed max-w-lg mb-8 font-normal">
-              Reunimos y desarrollamos negocios en tecnología, comunicación, talento, medios y educación. Cada uno con su propia identidad, capacidades y oportunidades de crecimiento.
+              Reunimos y desarrollamos empresas en tecnología, comunicación, talento, medios y educación. Cada una con su propia identidad, capacidades y oportunidades de crecimiento.
             </p>
 
             {/* Signature Pill Button with circular arrow */}
@@ -52,10 +52,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenArchitecture }) => {
               </a>
 
               <a
-                href="#nuestros-negocios"
+                href="#empresas"
                 className="text-xs uppercase font-bold tracking-[0.16em] text-[#5f5d59] hover:text-[#121313] transition-colors py-2.5 px-3"
               >
-                Nuestros negocios →
+                Empresas del grupo →
               </a>
             </div>
 
@@ -78,9 +78,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenArchitecture }) => {
           >
             {/* Geometric Mask Image Container */}
             <div
-              onClick={onOpenArchitecture}
-              className="relative hero-geometric-mask aspect-[4/3] sm:aspect-[16/11] lg:aspect-[16/12] w-full overflow-hidden bg-neutral-100 shadow-[0_30px_70px_-20px_rgba(0,0,0,0.18)] group cursor-pointer"
-              title="Ver equipo y espacios corporativos de Grupo Afiansur"
+              className="relative hero-geometric-mask aspect-[4/3] sm:aspect-[16/11] lg:aspect-[16/12] w-full overflow-hidden bg-neutral-100 shadow-[0_30px_70px_-20px_rgba(0,0,0,0.18)]"
             >
               {/* Animated Team Office Photography with Ken Burns effect */}
               <img
@@ -99,14 +97,8 @@ export const Hero: React.FC<HeroProps> = ({ onOpenArchitecture }) => {
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                 </span>
                 <span className="text-[11px] font-bold uppercase tracking-wider text-[#121313]">
-                  OFICINAS CENTRALES · BUENOS AIRES
+                  SEDE CENTRAL CORPORATIVA
                 </span>
-              </div>
-
-              {/* Hover overlay hint */}
-              <div className="absolute bottom-5 right-5 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/85 backdrop-blur-md px-4 py-2 rounded-full text-white text-[11px] font-semibold flex items-center gap-1.5 shadow-md">
-                <span>Ver espacios y arquitectura</span>
-                <ExternalLink className="w-3.5 h-3.5" />
               </div>
             </div>
 
@@ -121,7 +113,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenArchitecture }) => {
                 5 Áreas · 12 Marcas
               </p>
               <p className="text-xs text-[#5f5d59]">
-                Buenos Aires · Asunción · Madrid
+                Presencia y alcance regional
               </p>
             </div>
           </motion.div>

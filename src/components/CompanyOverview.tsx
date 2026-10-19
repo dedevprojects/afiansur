@@ -3,12 +3,12 @@ import { ArrowRight, Layers, ShieldCheck, Globe } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface CompanyOverviewProps {
-  onOpenReport: () => void;
+  onOpenReport?: () => void;
 }
 
-export const CompanyOverview: React.FC<CompanyOverviewProps> = ({ onOpenReport }) => {
+export const CompanyOverview: React.FC<CompanyOverviewProps> = () => {
   return (
-    <section className="w-full px-6 sm:px-10 md:px-16 py-20 md:py-28 bg-[#fafafa]" id="el-grupo">
+    <section className="w-full px-6 sm:px-10 md:px-16 py-20 md:py-28 bg-[#f5f4ef] border-y border-[#e8e6e1]/80" id="el-grupo">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left Column: Signature Anchor Tile + Photo Grid (matching ABOUT US composition in reference) */}
@@ -107,12 +107,12 @@ export const CompanyOverview: React.FC<CompanyOverviewProps> = ({ onOpenReport }
 
             {/* Signature Pill Button */}
             <div className="pt-4">
-              <button onClick={onOpenReport} className="pill-action-btn">
-                <span>Memoria Institucional 2025</span>
+              <a href="#empresas" className="pill-action-btn">
+                <span>Conocer nuestras empresas</span>
                 <span className="pill-action-btn-circle">
                   <ArrowRight className="w-4 h-4" />
                 </span>
-              </button>
+              </a>
             </div>
           </motion.div>
         </div>

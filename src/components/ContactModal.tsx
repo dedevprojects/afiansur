@@ -18,7 +18,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({
     organization: '',
     email: '',
     phone: '',
-    office: 'Buenos Aires',
+    office: 'Sede Central',
     subject: 'Alianzas estratégicas y nuevos negocios',
     targetUnit: preselectedBrand ? preselectedBrand.name : 'Dirección General de Grupo Afiansur',
     message: '',
@@ -188,16 +188,16 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="text-[11px] uppercase tracking-wider font-semibold text-[#191b1b] block mb-1">
-                      Sede de Interés
+                      Área o Sede de Interés
                     </label>
                     <select
                       value={formData.office}
                       onChange={(e) => setFormData({ ...formData, office: e.target.value })}
                       className="w-full bg-[#f4f3f1] border border-[#d3cfc8] px-3.5 py-2.5 text-sm text-[#191b1b] focus:outline-hidden focus:border-[#121313]"
                     >
-                      <option value="Buenos Aires">Buenos Aires (Sede Central)</option>
-                      <option value="Asunción">Asunción (Nodo Regional)</option>
-                      <option value="Madrid">Madrid (Delegación Europea)</option>
+                      <option value="Sede Central">Sede Central (Cono Sur)</option>
+                      <option value="Nodo Regional">Nodo Regional</option>
+                      <option value="Delegación Internacional">Delegación Internacional</option>
                     </select>
                   </div>
 
@@ -218,8 +218,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                       <option value="Krafyx">Krafyx (Identidad & Marca)</option>
                       <option value="Hatrixa">Hatrixa (Publicidad)</option>
                       <option value="Mandel Producciones">Mandel Producciones (Audiovisual)</option>
-                      <option value="Consultora Contraluz">Consultora Contraluz (Talento)</option>
-                      <option value="Grupo Mastech">Grupo Mastech (Tech Recruiting)</option>
+                      <option value="Consultora Contraluz">Consultora Contraluz (Selección IT)</option>
+                      <option value="GM">GM (Soluciones de RR. HH.)</option>
                       <option value="Historias Narradas">Historias Narradas (Editorial)</option>
                       <option value="Guía Sabor">Guía Sabor (Gastronomía)</option>
                       <option value="Escuela Online">Escuela Online (Educación)</option>
@@ -279,9 +279,9 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                   {CORPORATE_OFFICES.map((off) => (
-                    <div key={off.city} className="p-3 bg-[#f4f3f1] border border-[#d3cfc8]/50">
-                      <span className="font-semibold text-[#191b1b] block">{off.city}</span>
-                      <span className="text-[#5f5d59] block">{off.address}</span>
+                    <div key={off.country} className="p-3 bg-[#f4f3f1] border border-[#d3cfc8]/50">
+                      <span className="font-semibold text-[#191b1b] block">{off.country}</span>
+                      <span className="text-[#5f5d59] block">{off.role}</span>
                       <span className="font-mono text-[#7b766f] block mt-1">{off.email}</span>
                     </div>
                   ))}
