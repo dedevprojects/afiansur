@@ -23,6 +23,21 @@
   --color-secondary: #5f5d59;
   --color-outline: #7b766f;
   --color-outline-variant: #d3cfc8;
+
+  --color-brand: #121313;
+  --color-brand-from: #121313;
+  --color-brand-via: #373634;
+  --color-brand-to: #6e6a64;
+  --color-background: #ffffff;
+  --color-foreground: #121313;
+  --color-muted-foreground: #5f5d59;
+}
+
+:root {
+  --brand: #121313;
+  --muted-foreground: #7b766f;
+  --background: #ffffff;
+  --foreground: #121313;
 }
 
 @layer base {
