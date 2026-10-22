@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle2, Building, Mail, Phone, MapPin, Send } from 'lucide-react';
-import { CORPORATE_OFFICES, Brand } from '../data/afiansurData';
+import { X, CheckCircle2, Send, AlertCircle, Loader2 } from 'lucide-react';
+import { Brand } from '../data/afiansurData';
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -18,7 +18,6 @@ export const ContactModal: React.FC<ContactModalProps> = ({
     organization: '',
     email: '',
     phone: '',
-    office: 'Sede Central',
     subject: 'Alianzas estratégicas y nuevos negocios',
     targetUnit: preselectedBrand ? preselectedBrand.name : 'Dirección General de Grupo Afiansur',
     message: '',
@@ -26,6 +25,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({
 
   const [submitted, setSubmitted] = useState(false);
   const [ticketRef, setTicketRef] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (preselectedBrand) {
@@ -38,15 +39,53 @@ export const ContactModal: React.FC<ContactModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
     const randomId = Math.floor(1000 + Math.random() * 9000);
-    setTicketRef(`REF-AF-2025-${randomId}`);
-    setSubmitted(true);
+    const ref = `REF-AF-2025-${randomId}`;
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/grupoafiansur@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          _subject: `[Web Afiansur] Propuesta: ${formData.targetUnit} - ${formData.subject} (${ref})`,
+          "Código de Referencia": ref,
+          "Nombre y Apellido": formData.name,
+          "Empresa u Organización": formData.organization,
+          "Email de Contacto": formData.email,
+          "Teléfono": formData.phone || 'No especificado',
+          "Unidad Destino": formData.targetUnit,
+          "Asunto": formData.subject,
+          "Mensaje": formData.message,
+          _template: 'table',
+          _captcha: 'false',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar el formulario a grupoafiansur@gmail.com');
+      }
+
+      setTicketRef(ref);
+      setSubmitted(true);
+    } catch (err) {
+      console.error('Error al enviar propuesta:', err);
+      setErrorMessage('No se pudo enviar el mensaje en este momento. Por favor revise su conexión e intente nuevamente.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {
     setSubmitted(false);
+    setErrorMessage(null);
     onClose();
   };
 
@@ -95,8 +134,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({
 
               <div className="p-4 bg-[#f4f3f1] border border-[#d3cfc8]/60 max-w-md mx-auto text-left text-xs space-y-1">
                 <div className="flex justify-between">
-                  <span className="text-[#5f5d59]">Sede designada:</span>
-                  <span className="font-semibold text-[#191b1b]">{formData.office}</span>
+                  <span className="text-[#5f5d59]">Unidad / Marca:</span>
+                  <span className="font-semibold text-[#191b1b]">{formData.targetUnit}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#5f5d59]">Asunto:</span>
@@ -188,21 +227,6 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="text-[11px] uppercase tracking-wider font-semibold text-[#191b1b] block mb-1">
-                      Área o Sede de Interés
-                    </label>
-                    <select
-                      value={formData.office}
-                      onChange={(e) => setFormData({ ...formData, office: e.target.value })}
-                      className="w-full bg-[#f4f3f1] border border-[#d3cfc8] px-3.5 py-2.5 text-sm text-[#191b1b] focus:outline-hidden focus:border-[#121313]"
-                    >
-                      <option value="Sede Central">Sede Central (Cono Sur)</option>
-                      <option value="Nodo Regional">Nodo Regional</option>
-                      <option value="Delegación Internacional">Delegación Internacional</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="text-[11px] uppercase tracking-wider font-semibold text-[#191b1b] block mb-1">
                       Unidad / Marca de Destino
                     </label>
                     <select
@@ -225,23 +249,23 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                       <option value="Escuela Online">Escuela Online (Educación)</option>
                     </select>
                   </div>
-                </div>
 
-                <div>
-                  <label className="text-[11px] uppercase tracking-wider font-semibold text-[#191b1b] block mb-1">
-                    Motivo o Asunto Principal
-                  </label>
-                  <select
-                    value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full bg-[#f4f3f1] border border-[#d3cfc8] px-3.5 py-2.5 text-sm text-[#191b1b] focus:outline-hidden focus:border-[#121313]"
-                  >
-                    <option value="Alianzas estratégicas y nuevos negocios">Alianzas estratégicas y nuevos negocios</option>
-                    <option value="Inversiones y desarrollo de capital">Inversiones y desarrollo de capital</option>
-                    <option value="Contratación de servicios de una subsidiaria">Contratación de servicios de una subsidiaria</option>
-                    <option value="Relaciones Institucionales y Prensa">Relaciones Institucionales y Prensa</option>
-                    <option value="Contacto de RRHH y Proveedores">Contacto de RRHH y Proveedores</option>
-                  </select>
+                  <div>
+                    <label className="text-[11px] uppercase tracking-wider font-semibold text-[#191b1b] block mb-1">
+                      Motivo o Asunto Principal
+                    </label>
+                    <select
+                      value={formData.subject}
+                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                      className="w-full bg-[#f4f3f1] border border-[#d3cfc8] px-3.5 py-2.5 text-sm text-[#191b1b] focus:outline-hidden focus:border-[#121313]"
+                    >
+                      <option value="Alianzas estratégicas y nuevos negocios">Alianzas estratégicas y nuevos negocios</option>
+                      <option value="Inversiones y desarrollo de capital">Inversiones y desarrollo de capital</option>
+                      <option value="Contratación de servicios de una subsidiaria">Contratación de servicios de una subsidiaria</option>
+                      <option value="Relaciones Institucionales y Prensa">Relaciones Institucionales y Prensa</option>
+                      <option value="Contacto de RRHH y Proveedores">Contacto de RRHH y Proveedores</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div>
@@ -258,35 +282,36 @@ export const ContactModal: React.FC<ContactModalProps> = ({
                   ></textarea>
                 </div>
 
+                {errorMessage && (
+                  <div className="p-3.5 bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
+                    <span>{errorMessage}</span>
+                  </div>
+                )}
+
                 <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <span className="text-[11px] text-[#7b766f]">
                     * Datos tratados bajo estricta confidencialidad profesional.
                   </span>
                   <button
                     type="submit"
-                    className="w-full sm:w-auto px-8 py-3.5 bg-[#121313] text-white text-xs uppercase tracking-widest font-semibold hover:bg-black transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    disabled={isSubmitting}
+                    className="w-full sm:w-auto px-8 py-3.5 bg-[#121313] text-white text-xs uppercase tracking-widest font-semibold hover:bg-black transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    <span>Enviar Comunicación</span>
-                    <Send className="w-3.5 h-3.5" />
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin text-white" />
+                        <span>Enviando...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Enviar Comunicación</span>
+                        <Send className="w-3.5 h-3.5" />
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
-
-              {/* Office Contact Strip */}
-              <div className="mt-8 pt-6 border-t border-[#d3cfc8]/40">
-                <span className="text-[10px] uppercase tracking-widest text-[#7b766f] font-semibold block mb-3">
-                  Sedes Directas
-                </span>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                  {CORPORATE_OFFICES.map((off) => (
-                    <div key={off.country} className="p-3 bg-[#f4f3f1] border border-[#d3cfc8]/50">
-                      <span className="font-semibold text-[#191b1b] block">{off.country}</span>
-                      <span className="text-[#5f5d59] block">{off.role}</span>
-                      <span className="font-mono text-[#7b766f] block mt-1">{off.email}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           )}
         </div>

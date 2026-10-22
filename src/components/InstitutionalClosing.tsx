@@ -1,5 +1,4 @@
-import React from 'react';
-import { ArrowRight, Mail, Phone, MapPin, Clock } from 'lucide-react';
+import { ArrowRight, MapPin, Clock } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface InstitutionalClosingProps {
@@ -49,11 +48,7 @@ export const InstitutionalClosing: React.FC<InstitutionalClosingProps> = ({ onOp
                 </span>
                 <div className="space-y-2 text-sm text-[#5f5d59]">
                   <div className="flex items-center gap-3">
-                    <Mail className="w-4 h-4 text-[#121313]" />
-                    <span className="font-medium text-[#121313]">contacto@grupoafiansur.com</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Clock className="w-4 h-4 text-[#7b766f]" />
+                    <Clock className="w-4 h-4 text-[#121313]" />
                     <span>Lunes a Viernes · 09:00 a 18:00 (GMT-3)</span>
                   </div>
                 </div>
