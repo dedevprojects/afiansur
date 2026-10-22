@@ -8,6 +8,7 @@ import {
   type GlobeMarker,
 } from "@/components/velora/globe";
 import { NumberTicker } from "@/components/velora/number-ticker";
+import { TextHoverEffect } from "@/components/velora/text-hover-effect";
 
 /**
  * Centros operativos, sedes corporativas y nodos de vinculación de Grupo Afiansur
@@ -74,17 +75,18 @@ export function HeroGlobe({ onOpenArchitecture }: HeroProps = {}) {
             </div>
           </BlurFade>
 
-          {/* Master Brand Headline */}
-          <h1 className="mt-6 font-sans font-black text-4xl sm:text-5xl lg:text-6xl text-[#121313] tracking-tight leading-[1.02] uppercase mb-3">
-            GRUPO AFIANSUR
-          </h1>
+          {/* Master Brand Headline with TextHoverEffect */}
+          <div className="mt-6 mb-3 -ml-1 w-full max-w-xl">
+            <h1 className="sr-only">GRUPO AFIANSUR</h1>
+            <TextHoverEffect
+              text="GRUPO AFIANSUR"
+              className="w-full max-w-2xl font-black uppercase tracking-tight"
+            />
+          </div>
 
-          {/* Subordinate Institutional Manifesto / Claim */}
-          <p className="font-sans font-extrabold text-xl sm:text-2xl lg:text-[27px] tracking-tight leading-[1.16] uppercase mb-6 max-w-xl">
-            <span className="text-[#121313]">NEGOCIOS DISTINTOS.</span>{" "}
-            <span className="bg-gradient-to-r from-[#121313] via-[#44413c] to-[#7b766f] bg-clip-text text-transparent block sm:inline">
-              UNA VISIÓN COMPARTIDA.
-            </span>
+          {/* Subordinate Institutional Claim - Achicado como se solicitó */}
+          <p className="font-sans font-bold text-lg sm:text-xl tracking-tight text-[#121313] mb-5">
+            Una visión compartida.
           </p>
 
           {/* Paragraph description */}
