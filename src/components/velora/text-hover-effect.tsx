@@ -16,23 +16,18 @@ interface TextHoverEffectProps
   strokeWidth?: number;
   /** Radius of the pointer reveal, as a percentage of the drawing's size */
   revealRadius?: number;
-  /** Seconds the outline takes to draw itself in on mount */
-  drawDuration?: number;
 }
 
 const PAD = 4;
 
 /**
- * Oversized outlined text that draws itself in, then reveals a brand-gradient
- * version of the word inside a soft spotlight that follows the pointer.
- * Size it with a width class (`w-full`); the height follows the text. Weight
- * and font come from the className, e.g. `font-black`.
+ * Text component with solid dark base for instant legibility,
+ * that clarifies / illuminates into a lighter refined tone under the pointer spotlight.
  */
 export function TextHoverEffect({
   text,
   strokeWidth = 0.75,
-  revealRadius = 28,
-  drawDuration = 2.5,
+  revealRadius = 24,
   className,
   onPointerMove,
   ...props
@@ -40,8 +35,7 @@ export function TextHoverEffect({
   const id = useId();
   const outlineRef = useRef<SVGTextElement>(null);
   const reducedMotion = useReducedMotion();
-  // A rough first guess so the server render has sensible proportions; the
-  // real glyph box is measured once the font has loaded.
+
   const [box, setBox] = useState({
     w: text.length * 64 + PAD * 2,
     h: 80,
@@ -51,7 +45,7 @@ export function TextHoverEffect({
 
   const px = useMotionValue(50);
   const py = useMotionValue(50);
-  const spring = { stiffness: 260, damping: 32, mass: 0.6 };
+  const spring = { stiffness: 280, damping: 28, mass: 0.5 };
   const cx = useMotionTemplate`${useSpring(px, spring)}%`;
   const cy = useMotionTemplate`${useSpring(py, spring)}%`;
 
@@ -79,13 +73,6 @@ export function TextHoverEffect({
       live = false;
     };
   }, [text]);
-
-  useEffect(() => {
-    const el = outlineRef.current;
-    if (!el) return;
-    void getComputedStyle(el).strokeDashoffset;
-    el.style.strokeDashoffset = "0";
-  }, []);
 
   const frame = {
     maskUnits: "userSpaceOnUse",
@@ -128,11 +115,14 @@ export function TextHoverEffect({
       {...props}
     >
       <defs>
-        <linearGradient id={`${id}-ink`} x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0%" stopColor="#121313" />
-          <stop offset="50%" stopColor="#373634" />
-          <stop offset="100%" stopColor="#6e6a64" />
+        {/* Lightened, clarifying gradient under the spotlight */}
+        <linearGradient id={`${id}-light`} x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0%" stopColor="#8a857e" />
+          <stop offset="50%" stopColor="#c8c4bc" />
+          <stop offset="100%" stopColor="#8a857e" />
         </linearGradient>
+
+        {/* Dynamic pointer spotlight mask */}
         <motion.radialGradient
           id={`${id}-spot`}
           gradientUnits="userSpaceOnUse"
@@ -141,51 +131,42 @@ export function TextHoverEffect({
           r={`${revealRadius}%`}
         >
           <stop offset="0%" stopColor="white" />
-          <stop offset="55%" stopColor="white" stopOpacity={0.65} />
+          <stop offset="60%" stopColor="white" stopOpacity={0.8} />
           <stop offset="100%" stopColor="white" stopOpacity={0} />
         </motion.radialGradient>
+
         <mask id={`${id}-spot-mask`} {...frame}>
           <rect width="100%" height="100%" fill={`url(#${id}-spot)`} />
         </mask>
+
         <mask id={`${id}-outside`} {...frame}>
           <rect width="100%" height="100%" fill="white" />
           {word({ fill: "black" })}
         </mask>
       </defs>
 
-      {/* Persistent subtle base fill so the headline remains legible at all times */}
+      {/* 1. Base Layer: Solid, 100% black text for perfect immediate readability upon loading */}
       <g>
         {word({
-          fill: "#121313",
-          fillOpacity: 0.08,
-        })}
-      </g>
-
-      {/* Animated drawing outline */}
-      <g mask={`url(#${id}-outside)`}>
-        {word({
           ref: outlineRef,
-          strokeWidth: strokeWidth * 2.5,
-          style: { transitionDuration: `${drawDuration}s` },
-          className:
-            "fill-none stroke-[#121313]/60 transition-[stroke-dashoffset] ease-in-out [stroke-dasharray:1000] motion-safe:[stroke-dashoffset:1000] motion-reduce:transition-none",
-          onTransitionEnd: (event) => {
-            event.currentTarget.style.strokeDasharray = "none";
-          },
+          fill: "#121313",
+          className: "fill-[#121313]",
         })}
       </g>
 
-      {/* Spotlight reveal on hover */}
+      {/* 2. Spotlight Layer: Revealed only where the pointer hovers, clarifying and lightening the letters */}
       <g
         mask={`url(#${id}-spot-mask)`}
-        className="opacity-0 transition-opacity duration-300 group-hover/text-hover:opacity-100 motion-reduce:duration-150"
+        className="opacity-0 transition-opacity duration-200 group-hover/text-hover:opacity-100 motion-reduce:duration-100"
       >
-        {word({ fill: `url(#${id}-ink)`, fillOpacity: 0.95 })}
+        {word({
+          fill: `url(#${id}-light)`,
+        })}
         <g mask={`url(#${id}-outside)`}>
           {word({
             fill: "none",
-            stroke: `url(#${id}-ink)`,
-            strokeWidth: strokeWidth * 3.5,
+            stroke: "#dedbd5",
+            strokeWidth: strokeWidth * 2.5,
           })}
         </g>
       </g>
